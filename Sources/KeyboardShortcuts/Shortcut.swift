@@ -42,9 +42,14 @@ extension KeyboardShortcuts {
 		public let carbonModifiers: Int
 
 		/**
+		Whether the shortcut is available as a global shortcut or in-app.
+		*/
+		public var inApp: Bool = false
+
+		/**
 		Initialize from a strongly-typed key and modifiers.
 		*/
-		public init(_ key: Key, modifiers: NSEvent.ModifierFlags = []) {
+		public init(_ key: Key, modifiers: NSEvent.ModifierFlags = [], inApp: Bool = false) {
 			self.init(
 				carbonKeyCode: key.rawValue,
 				carbonModifiers: modifiers.carbon
@@ -108,7 +113,8 @@ extension KeyboardShortcuts.Shortcut {
 		if
 			#available(macOS 15, *),
 			Constants.isSandboxed,
-			disallowedModifiers.contains(modifiers)
+			disallowedModifiers.contains(modifiers),
+			!inApp
 		{
 			return true
 		}
